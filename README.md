@@ -17,6 +17,6 @@ For plug-in installation instructions, see the [OpenSesame plug-in page][plug-in
 
 Furthermore, this plug-in requires that the [VLC player][vlc] has been installed to the default location.
 
-[opensesame]: http://www.cogsci.nl/opensesame
+[opensesame]: http://osdoc.cogsci.nl
 [vlc]: http://www.videolan.org/
 [plug-ins]: http://osdoc.cogsci.nl/3.1/manual/environment/
