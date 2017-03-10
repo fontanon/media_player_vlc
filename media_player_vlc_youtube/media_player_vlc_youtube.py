@@ -43,14 +43,14 @@ except ImportError:
 		"MediaInfo module not found. This plug-in runs better with pymediainfo installed (http://paltman.github.com/pymediainfo/).",
 		reason="warning")
 
-class media_player_vlc(item, generic_response.generic_response):
+class media_player_vlc_youtube(item, generic_response.generic_response):
 
 	"""
 	The media_player plug-in offers advanced video playback functionality in
 	OpenSesame, using vlc
 	"""
 
-	description = u"Plays a video from file"
+	description = u"Plays a video from youtube"
 
 	def reset(self):
 
@@ -132,12 +132,14 @@ class media_player_vlc(item, generic_response.generic_response):
 
 		# Find the full path to the video file in the file pool, and check if it
 		# can be found.
-		path = self.experiment.pool[self.var.video_src]
-		debug.msg(u"loading '%s'" % path)
-		if not os.path.isfile(path):
-			raise osexception(
-				u"Video file '%s' was not found by video_player '%s' (or no video file was specified)."
-				% (os.path.basename(path), self.name))
+		path = self.var.video_src
+
+		# Commented as this is not a file but a youtube path
+		# debug.msg(u"loading '%s'" % path)
+		# if not os.path.isfile(path):
+		# 	raise osexception(
+		# 		u"Video file '%s' was not found by video_player '%s' (or no video file was specified)."
+		# 		% (os.path.basename(path), self.name))
 
 		# Read the framerate from the video file, and fall back to a default
 		# framerate if this fails
@@ -160,8 +162,15 @@ class media_player_vlc(item, generic_response.generic_response):
 		self.player = self.vlcInstance.media_player_new()
 
 		try:
+			# Trick on how to reproduce youtube from python-vlc http://stackoverflow.com/a/29430900
 			self.media = self.vlcInstance.media_new(path)
+			self.media_list = self.vlcInstance.media_list_new([path])
 			self.player.set_media(self.media)
+
+			self.list_player =  self.vlcInstance.media_list_player_new()
+			self.list_player.set_media_player(self.player)
+			self.list_player.set_media_list(self.media_list)
+
 			self.media.parse()
 			self.file_loaded = True
 			# Determines if cleanup is necessary later
@@ -231,8 +240,15 @@ class media_player_vlc(item, generic_response.generic_response):
 		self.set_sri(reset=True)
 		self.experiment.var.response = None
 		self.experiment.end_response_interval = self.sri
+
+		# Experiment variables added to prevent running failures. Dunno why ...
+		self.experiment.var.total_response_time = 2000
+		self.experiment.var.total_responses = 1
+		self.experiment.var.total_correct = 1
+
 		# Start movie playback and wait until the movie has started
-		self.player.play()
+		self.list_player.play()
+
 		while self.player.get_state() == vlc.State.Opening:
 			pass
 		# Loop until
@@ -265,7 +281,7 @@ class media_player_vlc(item, generic_response.generic_response):
 			if sleeptime > 0:
 				self.clock.sleep(int(sleeptime))
 			self.frame_no += 1
-		self.player.stop()
+		self.list_player.stop()
 		self.closePlayer()
 		generic_response.generic_response.response_bookkeeping(self)
 
@@ -294,9 +310,9 @@ class media_player_vlc(item, generic_response.generic_response):
 
 		return generic_response.generic_response.var_info(self)
 
-class qtmedia_player_vlc(media_player_vlc, qtautoplugin):
+class qtmedia_player_vlc_youtube(media_player_vlc_youtube, qtautoplugin):
 
 	def __init__(self, name, experiment, script=None):
 
-		media_player_vlc.__init__(self, name, experiment, script)
+		media_player_vlc_youtube.__init__(self, name, experiment, script)
 		qtautoplugin.__init__(self, __file__)

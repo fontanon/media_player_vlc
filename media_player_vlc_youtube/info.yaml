@@ -1,10 +1,10 @@
-author: "Daniel Schreij"
+author: "J. Félix Ontañón (based on Daniel Schreij media_player_vlc)"
 category: "Visual stimuli"
 controls:
   -
-    label: "Video file"
+    label: "Youtube Video URL"
     tooltip: "A video file"
-    type: filepool
+    type: line_edit
     var: video_src
   -
     label: "Play audio"
@@ -22,30 +22,32 @@ controls:
     tooltip: "Specifies if the video has to be stretched over the screen width"
     type: combobox
     var: resizeVideo
+
+  # This media-player-vlc does not works with youtube
+  # -
+  #   label: "Call custom Python code"
+  #   name: combobox_event_handler_trigger
+  #   options:
+  #     - "on keypress"
+  #     - "after every frame"
+  #   tooltip: "Determine when the custom event handling code is called."
+  #   type: combobox
+  #   var: event_handler_trigger
+  # -
+  #   label: Duration
+  #   name: line_edit_duration
+  #   tooltip: "Expecting a value in milliseconds or 'keypress'"
+  #   type: line_edit
+  #   var: duration
+  #   validator: duration
+  # -
+  #   label: "Custom Python code (See Help for more information)"
+  #   syntax: true
+  #   tooltip: "Specify how you would like to handle events like mouse clicks or keypresses. When set, this overrides the Duration attribute"
+  #   type: editor
+  #   var: event_handler
   -
-    label: "Call custom Python code"
-    name: combobox_event_handler_trigger
-    options:
-      - "on keypress"
-      - "after every frame"
-    tooltip: "Determine when the custom event handling code is called."
-    type: combobox
-    var: event_handler_trigger
-  -
-    label: Duration
-    name: line_edit_duration
-    tooltip: "Expecting a value in milliseconds or 'keypress'"
-    type: line_edit
-    var: duration
-    validator: duration
-  -
-    label: "Custom Python code (See Help for more information)"
-    syntax: true
-    tooltip: "Specify how you would like to handle events like mouse clicks or keypresses. When set, this overrides the Duration attribute"
-    type: editor
-    var: event_handler
-  -
-    label: "<small><b>Media Player VLC OpenSesame Plugin 2.0.0, Copyright (2010-2015) Daniel Schreij</b></small>"
+    label: "<small><b>Media Player VLC Youtube OpenSesame Plugin 0.0.1, Copyright (2017) J. Félix Ontañón. Based on media-player-vlc by Daniel Schreij</b></small>"
     type: text
-url: "https://github.com/dschreij/media_player_vlc"
-version: "2.0.0"
+url: "https://github.com/fontanon/media_player_vlc_youtube"
+version: "0.0.1"
